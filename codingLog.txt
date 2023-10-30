@@ -1,0 +1,84 @@
+--------------------------------------------------------------------------------------------------------
+2023/10/30 
+★진짜 마지막으로 제대로 해보자 포기하지말고!!★
+
+============================================
+환경설정
+
+IDE: intelliJ community
+언어: java
+프로젝트: maven
+프레임워크: springboot 3.1.5
+packaging: jar
+jdk: 11 
+DB: MySQL
+
+============================================
+
+Dependency: lombok, thymleaf, spring data jpa, spring web, mysql driver, h2 database 
+
+Lombok: getter&setter @data 어노테이션 하나로 졸라 편하게 할수 있는놈. 
+자세히는 모르지만 더 자세히 알게되면 보충해서 작성함.
+
+Thymeleaf: 서버에서 가공한 데이터를 뷰에 보여주기 위한 템플릿 엔진이다. 자세한 내용은 천천히 하면서 하자 
+
+Spring Data JAP: JPA를 쉽게 구현할 수 있도록 도와주는 모듈
+
+MySQL Driver: 프로젝트에서 사용할 데이터베이스는 MySQL이다. 이걸 사용하기 위해 의존성 추가한다.
+
+H2 Database: 자바 기반의 관계형 데이터베이스로 매우 가볍고 빠른 데이터베이스, 디스크 기반의 데이터 저장뿐 아니라 
+메모리 내에 데이터를 저장하는 인 메모리 데이터베이스 기능을 지원, 데이터를 영구적으로 저장하는데 권장되는 데이터베이스는
+아니지만 위의 장점들 때문에 테스트용 데이터베이스로 많이 사용함. 이상
+
+============================================
+
+application.properties 설정 
+
+#어플리케이션 포트 설정
+server.port=80
+
+#MySQL 연결 설정
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+// 데이터베이스에 연결하기 위해 mysql jdbc driver를 설정.
+
+spring.datasource.url=jdbc:mysql://localhost3306/shop?serverTimezone=UTC
+// 연결할 데이터베이스의 url, 포트번호, 데이터베이스의 이름을 입력
+
+spring.datasource.username=jun
+spring.datasource.password=1234
+// 데이터 베이스의 아이디와 비밀번호 spring.datasource.hikari.jdbc-url=jdbc:mysql://{url}:{port}/{db}
+
+spring.jpa.properties.hibernate.show_sql=true
+
+spring.jpa.properties.hibernate.format_sql=true
+
+logging.level.org.hibernate.type.descriptor.sql=trace
+
+spring.jpa.hibernate.ddl-auto=create
+// 데이터베이스 초기화 전략을 설정한다. 나중에 좀 더 자세히 봄 
+
+spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+// SQL은 표준 SQL과 DBMS 벤더에서 제공하는 SQL이 존재한다. 각 공급업체에서 만든 SQL을 방언(Dialect)이라고 생각하면 됨.
+// 우리가 사용하는 데이터베이스는 MySQL이어서 JPA에 MySQL8Dialect를 사용하라고 알려준다. 만약 데이터베이스를 오라클로
+// 교체하더라도, 오라클의 Dialect를 설정해준다면 문제없이 어플리케이션을 구동할 수 있음. 
+
+★ 데이터베이스 초기화 전략 - DDL AUTO 옵션 ★
+
+application.properties에 추가한 jpa 옵션 중 주의 깊게 봐야 할 설정은 DDL AUTO이다. 
+spring.jpa.hibernate.ddl-auto 옵션을 통해 어플리케이션 구동 시 jpa의 데이터베이스 초기화 전략을 설정할 수 있다. 총 5개가 있다.
+
+none: 사용하지 않음
+create: 기존 테이블 삭제 후 테이블 생성
+create-drop: 기존 테이블 삭제 후 테이블 생성, 종료 시점에 테이블 삭제
+update: 변경된 스키마 적용
+validate: 엔티티와 테이블 정상 매핑 확인
+
+★ 여기서 잠깐, Github에 레파지토리 생성하고 오늘은 끊자!
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------
+2023/10/31
