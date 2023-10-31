@@ -1,3 +1,5 @@
+// JPA를 사용하기 위해 엔티티 매니저를 이용해 item 엔티티를 저장하는 예제코드.
+
 package com.shop.entity;
 
 import com.shop.constant.ItemSellStatus;
