@@ -101,8 +101,15 @@ com.shop -> 패키지 추가 -> repository 패키지 생성 -> ItemRepository �
 --------------------------------------------------------------------------------------------------------
 2023/11/01 
 
-91쪽 findByPriceLessThanTest -> test코드 작성부터  
-ItemRepositoryTest.java 작성부터!
+91쪽 findByPriceLessThanTest -> test코드 작성부터 시작
+
+Query어노테이션 시작 
+
+Querydsl 추가 -> pom.xml에 의존성 추가 
+
+ThymeLeaf 돌입 110페이지
+
+
 
 
 
