@@ -85,5 +85,15 @@ public class ThymeleafExController {
             return "thymeleafEx/thymeleafEx05";
         }
 
+        // th:href를 이용한 파라미터 데이터 전달용 컨트롤러 작성하기
+    @GetMapping(value = "/ex06")
+    // 전달했던 매개 변수와 같은 이름의 String 변수 param1, param2를 파라미터로 설정하면
+    // 자동으로 데이터가 바인딩된다. 매개 변수를 model에 담아서 viw로 전달)
+    public String thymeleafExample06(String param1, String param2, Model model) {
+        model.addAttribute("param1", param1);
+        model.addAttribute("param2", param2);
+            return "thymeleafEx/thymeleafEx06";
+    }
+
 
 }
