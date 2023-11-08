@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <!--마찬가지로 다른페이지에 포함시킬 영역을 th:fragment로 선언해준다. header영역을
 fragment로 만들겠다.-->
@@ -13,6 +14,7 @@ fragment로 만들겠다.-->
             <a class="navbar-brand" href="/">Shop</a>
 
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
                         <a class="nav-link" href="/admin/item/new">상품 등록</a>
@@ -33,11 +35,12 @@ fragment로 만들겠다.-->
                         <a class="nav-link" href="/members/logout">로그아웃</a>
                     </li>
                 </ul>
+
                 <form class="form-inline my-2 my-lg-0" th:action="@{/}" method="get">
                     <input name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </div>
         </nav>
-
+    </div>
 </html>

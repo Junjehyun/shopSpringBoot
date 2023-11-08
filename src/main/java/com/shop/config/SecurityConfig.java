@@ -22,19 +22,20 @@ public class SecurityConfig {
 
     @Autowired
     MemberService memberService;
-    @Bean
-    protected void configure(HttpSecurity http) throws Exception {
 
-        http.formLogin()
-                .loginPage("/members/login") // 로그인 페이지 url설정
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.formLogin(form -> form.loginPage("/members/login") // 로그인 페이지 url설정
                 .defaultSuccessUrl("/") // 로그인 성공 시 이동할 URL을 설정
                 .usernameParameter("email") // 로그인 시 사용할 파라미터 이름으로 email지정
                 .failureUrl("/members/login/error") // 로그인 실패 시 이동할 URL 설정
-                .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout")) // 로그아웃 URL설정
-                .logoutSuccessUrl("/"); // 로그아웃 성공 시 이동할 URL설정
+                ).logout((logout) ->
+                logout.logoutRequestMatcher(new AntPathRequestMatcher("/members/logout")) // 로그아웃 URL설정
+                        .logoutSuccessUrl("/") // 로그아웃 성공 시 이동할 URL설정
+        );
+        return http.build();
     }
+
     @Bean
     // 비밀번호를 데이터베이스에 그대로 저장했을 경우, 데이터베이스가 해킹당하면 고객의 회원 정보가 그대로 노출된다.
     // 이를 해결하기 위해 BCryptPasswordEncoder의 해시 함수를 이용하여 비밀번호를 암호화 하여 저장한다.
@@ -43,12 +44,5 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(memberService)
-                .passwordEncoder(passwordEncoder());
-        // Spring Security에서 인증은 AuthenticationManager를 통해 이루어지며, AuthenticationManagerBuilder가
-        // AuthenticationManager를 생성한다. userDetailService를 구현하고 있는 객체로 memberService를 지정해주며,
-        // 비밀번호 암호화를 위해 passwordEncoder를 지정해준다.
-    }
 }
+
