@@ -1,5 +1,6 @@
 package com.shop.controller;
 
+
 import com.shop.dto.MemberFormDto;
 import com.shop.entity.Member;
 import com.shop.service.MemberService;
@@ -14,27 +15,25 @@ import org.springframework.security.test.web.servlet.response.SecurityMockMvcRes
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.rmi.server.ExportException;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 
 @SpringBootTest
-// MockMvc 테스트를 위해 @AutoConfigureMockMvc어노테이션을 선언
 @AutoConfigureMockMvc
 @Transactional
-@TestPropertySource(locations="classpath:application-test.properties")
+@TestPropertySource(locations = "classpath:application-test.properties")
 class MemberControllerTest {
+
 
     @Autowired
     private MemberService memberService;
-
     @Autowired
-    //MockMvc 클래스를 이용해 실제 객체와 비슷하지만 테스트에 필요한 기능만 가지는 가짜 객체이다.
-    // MockMvc객체를 이용하면 웹 브라우저에서 요청을 하는것 처럼 테스트할 수 있다.
-    private MockMvc mockMvc;
+    private MockMvc movcMvc;
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    //로그인 예제 진행을 위해서 로그인 전 회원을 등록하는 메소드를 만듬.
     public Member createMember(String email, String password) {
         MemberFormDto memberFormDto = new MemberFormDto();
         memberFormDto.setEmail(email);
@@ -51,12 +50,10 @@ class MemberControllerTest {
         String email = "test@email.com";
         String password = "1234";
         this.createMember(email, password);
-        mockMvc.perform(formLogin().userParameter("email")
-                //회원 가입 메소드를 실행 후 가입된 회원 정보로 로그인이 되는지 테스트를 진행한다.
-                // userParameter()를 이용하여 이메일을 아이디로 세팅하고 로그인 URL에 요청한다.
+
+        movcMvc.perform(formLogin().userParameter("email")
                 .loginProcessingUrl("/members/login")
                 .user(email).password(password))
-                //로그인이 성공하여 인증되었다면 테스트 코드가 통과함
                 .andExpect(SecurityMockMvcResultMatchers.authenticated());
     }
 
@@ -66,9 +63,11 @@ class MemberControllerTest {
         String email = "test@email.com";
         String password = "1234";
         this.createMember(email, password);
-        mockMvc.perform(formLogin().userParameter("email")
-                .loginProcessingUrl("/members/login")
-                .user(email).password("12345"))
+
+        movcMvc.perform(formLogin().userParameter("email")
+                        .loginProcessingUrl("/members/login")
+                        .user(email).password("12345"))
                 .andExpect(SecurityMockMvcResultMatchers.unauthenticated());
+
     }
 }
