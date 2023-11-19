@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Getter
 @Setter
 @ToString
-public class Member {
+public class Member extends BaseEntity{
 
     @Id
     @Column(name="member_id")
@@ -38,7 +38,8 @@ public class Member {
 
     // Member 엔티티를 생성하는 메소드다. Member 엔티티에 회원을 생성하는 메소드를 만들어서 관리를 한다면
     // 코드가 변경되더라도 한 군데만 수정하면 되는 이점이 있다.
-    public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
+    public static Member createMember(MemberFormDto memberFormDto,
+                                      PasswordEncoder passwordEncoder) {
         Member member = new Member();
         member.setName(memberFormDto.getName());
         member.setEmail(memberFormDto.getEmail());
@@ -46,8 +47,10 @@ public class Member {
         // 스프링 시큐리티 설정 클래스에 등록한 BCryptPasswordEncoder Bean을 파라미터로 넘겨서 비밀번호를 암호화함.
         String password = passwordEncoder.encode(memberFormDto.getPassword());
         member.setPassword(password);
-        member.setRole(Role.USER);
+        // Member 엔티티 생성 시 User Role로 생성하던 권한을 ADMIN Role로 생성하도록 수정한다.
+        member.setRole(Role.ADMIN);
         return member;
     }
+
 }
 // 이제 회원 정보를 저장하는 Member 엔티티를 만든다. 관리할 회원 정보는 이름, 이메일, 비밀번호, 주소, 역할이다.

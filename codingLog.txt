@@ -190,5 +190,61 @@ http://localhost/thymeleaf/ex05부터 낼 다시
 
 로그인/로그아웃 좀 이상함. 일단 스탑 
 이거 감안하고 181쪽부터 진행하면됨 
-쿄토 다녀옴.
 ----------------------------------------------------------------------------------------------------------
+23/11/14
+또 씨발 securityConfig 문제다.
+  http.authorizeRequests()
+                .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
+                .requestMatchers("/", "/members/**", "/item/**", "/images/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+        ;
+         return http.build();
+
+여기서부터 다시 손 봐야된다. 일단 충돌이 일어난거같으니 내일 다시 차근차근히....
+----------------------------------------------------------------------------------------------------------
+23/11/15
+아직 해결 안됨. 근데 조금씩 알거같다. 
+
+일단 spring 3이상 버전부터 spring security 많이 바뀌엇고
+
+그래서 여러가지 찾아봐야된다. 
+
+http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
+                .requestMatchers("/", "/members/**", "/item/**", "/images/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+        );
+
+        http.exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+        ;
+
+         return http.build();
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+요놈들이 문제다, 그리고 h2와 servletDispatcher 충돌문제로 이것도 해결 해야함. 
+주말중에 해결하자 할게 많다.  183쪽부터 보면됨 
+----------------------------------------------------------------------------------------------------------
+23/11/18
+
+This is because there is more than one mappable servlet in your servlet context: {org.h2.server.web.JakartaWebServlet=[/h2-console/*], org.springframework.web.servlet.DispatcherServlet=[/]}. 에 대한 문제.
+
+이 오류는 서블릿 컨텍스트에 두 개 이상의 매핑된 서블릿이 있어 충돌이 발생했음을 나타냅니다. 이 경우, H2 데이터베이스 콘솔의 JakartaWebServlet과 Spring의 DispatcherServlet이 경로 충돌이 발생하고 있습니다.
+
+spring.h2.console.enabled=false 이걸로 해결
+
+좀 찝찝한데 일단 5장 연관매핑 시작
+
+198쪽 OrderStatus.java 부터
+----------------------------------------------------------------------------------------------------------
+23/11/19
+
+음... 서버가 페이지를 못읽어오네 흠...... 컨트롤러 문제인가? 일단 진행한다 
+245p -> FileService.java 부터 작성하면됨. 
+간만에 깃 푸시 해주자
