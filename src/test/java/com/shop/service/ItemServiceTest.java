@@ -36,13 +36,15 @@ public class ItemServiceTest {
     ItemImgRepository itemImgRepository;
 
     List<MultipartFile> createMultipartFiles() throws Exception {
+
        List<MultipartFile> multipartFileList = new ArrayList<>();
 
        for(int i=0; i<5; i++) {
            String path = "C:/shop/item/";
            String imageName = "image" + i + ".jpg";
            MockMultipartFile mockMultipartFile =
-                   new MockMultipartFile(path, imageName, "image/jpg", new byte[]{1,2,3,4});
+                   new MockMultipartFile(path, imageName, "image/jpg",
+                           new byte[]{1,2,3,4});
            multipartFileList.add(mockMultipartFile);
        }
        return multipartFileList;
